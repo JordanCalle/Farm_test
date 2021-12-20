@@ -1,0 +1,13 @@
+package com.Test_Jordan.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class FarmTestJavaApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(FarmTestJavaApplication.class, args);
+	}
+
+}
