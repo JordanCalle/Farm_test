@@ -9,10 +9,10 @@ import com.Test_Jordan.demo.model.Animals;
 import com.Test_Jordan.demo.repositories.IAnimal;
 import com.Test_Jordan.demo.service.IAnimalService;
 
-@Service
+@Service //bean
 public class AnimalsService implements IAnimalService { // Implementa y trae los métodos de mi interfaz IAnimalService
 
-	@Autowired // Enlazar con dependencias y métodos correspondientes
+	@Autowired // Enlazar con dependencias y métodos correspondientes, e inicializar
 	private IAnimal data;
 
 	@Override
