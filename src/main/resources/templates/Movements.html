@@ -10,8 +10,8 @@
 	crossorigin="anonymous">
 </head>
 <body>
-
-<head>
+	
+	<head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">My Farm</a>
@@ -37,29 +37,27 @@
   </div>
 </nav>
 </head>
-
-	<h3>Eggs Stock</h3>
+	
+	<h3>Movements History</h3>
 	<div class="contanier mt-4">
-	<a th:href="@{/new}" class="btn btn-primary">Buy Egg</a>
 		
-		<br> <br>
 		<table class="table">
 			<thead>
 				<tr bgcolor="grey">
 					<th>ID</th>
+					<th>Name</th>
 					<th>Price</th>
-					<th>Status</th>
-					<th>Start Date</th>
-					<th>Actions</th>
+					<th>Transaction Date</th>
+					<th>Farm's New Balance</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="animal:${animals}">
-					<td th:text=${animal.id}></td>
-					<td th:text=${animal.price}></td>
-					<td th:text=${animal.status}></td>
-					<td th:text=${animal.startdate}></td>
-					<td><a th:href="@{/editar/}+${animal.id}" class="btn btn-warning">Sell</a></td>
+				<tr th:each="movements:${movements}">
+					<td th:text=${movements.id}></td>
+					<td th:text=${movements.name}></td>
+					<td th:text=${movements.price}></td>
+					<td th:text=${movements.transactiondate}></td>
+					<td th:text=${movements.newbalance}></td>
 				</tr>
 			</tbody>
 		</table>
