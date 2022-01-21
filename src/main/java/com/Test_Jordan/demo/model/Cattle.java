@@ -7,43 +7,34 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Animals") //Will store eggs.
-public class Animals {
+@Table(name = "Cattle")
+
+public class Cattle {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	// Variables Encapsuladas
-	private Integer id;
-	private Float price;
+	private Long id;
 	private String status;
 	private Integer startdate;
 
-	public Animals() {
+	public Cattle() {
 
 	}
 
-	public Animals(Integer id, Float price, String status, Integer startdate) {
+	public Cattle(Long id, String status, Integer startdate) {
 		super();
 		this.id = id;
-		this.price = price;
 		this.status = status;
 		this.startdate = startdate;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Float getPrice() {
-		return price;
-	}
-
-	public void setPrice(Float price) {
-		this.price = price;
 	}
 
 	public String getStatus() {
@@ -64,5 +55,6 @@ public class Animals {
 
 	
 	
-
+	
+	
 }

@@ -7,8 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Animals") //Will store eggs.
-public class Animals {
+@Table(name = "Chickens")
+
+public class Chickens {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
@@ -18,11 +19,11 @@ public class Animals {
 	private String status;
 	private Integer startdate;
 
-	public Animals() {
+	public Chickens() {
 
 	}
 
-	public Animals(Integer id, Float price, String status, Integer startdate) {
+	public Chickens(Integer id, Float price, String status, Integer startdate) {
 		super();
 		this.id = id;
 		this.price = price;
@@ -64,5 +65,5 @@ public class Animals {
 
 	
 	
-
+	
 }

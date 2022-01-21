@@ -10,8 +10,8 @@
 	crossorigin="anonymous">
 </head>
 <body>
-
-<head>
+	
+	<head>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">My Farm</a>
@@ -37,10 +37,10 @@
   </div>
 </nav>
 </head>
-
-	<h3>Eggs Stock</h3>
+	
+	<h3>Chickens Stock</h3>
 	<div class="contanier mt-4">
-	<a th:href="@{/new}" class="btn btn-primary">Buy Egg</a>
+	<a th:href="@{/newchicken}" class="btn btn-primary">Buy Chicken</a>
 		
 		<br> <br>
 		<table class="table">
@@ -54,12 +54,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="animal:${animals}">
-					<td th:text=${animal.id}></td>
-					<td th:text=${animal.price}></td>
-					<td th:text=${animal.status}></td>
-					<td th:text=${animal.startdate}></td>
-					<td><a th:href="@{/editar/}+${animal.id}" class="btn btn-warning">Sell</a></td>
+				<tr th:each="chickens:${chickens}">
+					<td th:text=${chickens.id}></td>
+					<td th:text=${chickens.price}></td>
+					<td th:text=${chickens.status}></td>
+					<td th:text=${chickens.startdate}></td>
+					<td><a th:href="@{/editarchicken/}+${chickens.id}" class="btn btn-warning">Sell</a></td>
 				</tr>
 			</tbody>
 		</table>
