@@ -2,6 +2,7 @@ package com.Test_Jordan.demo.controller;
 
 import java.util.List;
 import java.util.Optional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class Controllers {
 	}
 
 	@PostMapping("/save")
-	public String save(Animals a, Model model) {
+	public String save(@Valid Animals a, Model model) {
 		service.save(a);
 		return "redirect:/listeggs";
 	}
@@ -50,19 +51,19 @@ public class Controllers {
 	public String editar(@PathVariable Integer id, Model model) {
 		Optional<Animals> animals = service.listarId(id);
 		model.addAttribute("animals", animals);
-		return "form";
+		return "editeggsform";
 	}
-	
+
 	@Autowired
 	private IChickenService servicechickens;
-	
+
 	@GetMapping("/listchickens")
 	public String listchickens(Model model) {
 		List<Chickens> chickens = servicechickens.listchickens();
 		model.addAttribute("chickens", chickens); // Envio todo el objeto al formulario
 		return "Chickens"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
-	
+
 	@GetMapping("/newchicken")
 	public String agregarchicken(Model model) {
 		model.addAttribute("chickens", new Chickens());
@@ -70,36 +71,48 @@ public class Controllers {
 	}
 
 	@PostMapping("/savechicken")
-	public String save(Chickens a, Model model) {
+	public String save(@Valid Chickens a, Model model) {
 		servicechickens.savechickens(a);
 		return "redirect:/listchickens";
 	}
-	
+
 	@GetMapping("/editarchicken/{id}")
 	public String editarchicken(@PathVariable Integer id, Model model) {
 		Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
 		model.addAttribute("chickens", chickens);
-		return "formchicken";
+		return "editchickenform";
 	}
-	
+
 	@Autowired
 	private ICattleService servicecattle;
-	
+
 	@GetMapping("/listcattle")
 	public String listcattle(Model model) {
 		List<Cattle> cattle = servicecattle.listcattle();
 		model.addAttribute("cattle", cattle); // Envio todo el objeto al formulario
 		return "Cattle"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
-	
+
 	@Autowired
 	private IMovementsService servicemovements;
-	
+
 	@GetMapping("/listmovements")
 	public String listmovements(Model model) {
 		List<Movements> movements = servicemovements.listmovements();
 		model.addAttribute("movements", movements); // Envio todo el objeto al formulario
 		return "Movements"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
-	
+
+	@GetMapping("/newtransaction")
+	public String agregartransaction(Model model) {
+		model.addAttribute("movements", new Movements());
+		return "movementsform";
+	}
+
+	@PostMapping("/savetransaction")
+	public String save(Movements a, Model model) {
+		servicemovements.savetransaction(a);
+		return "redirect:/listmovements";
+	}
+
 }

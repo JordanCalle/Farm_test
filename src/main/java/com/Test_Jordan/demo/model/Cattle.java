@@ -1,5 +1,7 @@
 package com.Test_Jordan.demo.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,13 +18,13 @@ public class Cattle {
 	// Variables Encapsuladas
 	private Long id;
 	private String status;
-	private Integer startdate;
+	private LocalDate startdate = LocalDate.now();
 
 	public Cattle() {
 
 	}
 
-	public Cattle(Long id, String status, Integer startdate) {
+	public Cattle(Long id, String status, LocalDate startdate) {
 		super();
 		this.id = id;
 		this.status = status;
@@ -45,11 +47,11 @@ public class Cattle {
 		this.status = status;
 	}
 
-	public Integer getStartdate() {
+	public LocalDate getStartdate() {
 		return startdate;
 	}
 
-	public void setStartdate(Integer startdate) {
+	public void setStartdate(LocalDate startdate) {
 		this.startdate = startdate;
 	}
 

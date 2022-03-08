@@ -23,12 +23,12 @@ public class ChickenService implements IChickenService{
 
 	@Override
 	public Integer savechickens(Chickens a) {
-		Integer res=0;
+		//Integer res=0;
 		Chickens chickens=data.save(a);
-		if(!chickens.equals(null)) {
+		/*if(!chickens.equals(null)) {
 			res=1;
-		}
-		return res;
+		}*/
+		return 0;
 	}
 
 	@Override

@@ -13,25 +13,23 @@
 
 				<div class="card">
 					<div class="card-header"></div>
-					<h3>Buy Chickens</h3>
+					<h3>Sell Chickens</h3>
 					<div class="card-body">
-						
-						<div class="form-group" hidden>
+						<div class="form-group">
 							<label>ID</label>
-							<input th:field="*{id}" type="text" class="form-control"/>
+							<input th:field="*{id}" type="text" class="form-control" disabled/>
 						</div>
-						
 						<div class="form-group">
 							<label>Price</label>
 							<input th:field="*{price}" type="text" class="form-control"/>
 						</div>
 						<div class="form-group">
 							<label>Start Date</label>
-							<input th:field="*{startdate}" type="text" class="form-control" placeholder="DDMMYYYY"/>
+							<input th:field="*{startdate}" type="text" class="form-control" disabled/>
 						</div>
 						<div class="form-group">
 							<label>Status</label>
-							<input th:field="*{status}" type="text" class="form-control" placeholder="Example: In farm"/>
+							<input th:field="*{status}" type="text" class="form-control"/>
 						</div>
 					</div>
 					<div class="card-footer">

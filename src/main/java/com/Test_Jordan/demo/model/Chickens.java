@@ -5,25 +5,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "Chickens")
-
 public class Chickens {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY) 
-	// Variables Encapsuladas
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private Float price;
 	private String status;
-	private Integer startdate;
+	private LocalDate startdate = LocalDate.now();
 
 	public Chickens() {
 
 	}
 
-	public Chickens(Integer id, Float price, String status, Integer startdate) {
+	public Chickens(Integer id, Float price, String status, LocalDate startdate) {
 		super();
 		this.id = id;
 		this.price = price;
@@ -55,11 +54,11 @@ public class Chickens {
 		this.status = status;
 	}
 
-	public Integer getStartdate() {
+	public LocalDate getStartdate() {
 		return startdate;
 	}
 
-	public void setStartdate(Integer startdate) {
+	public void setStartdate(LocalDate startdate) {
 		this.startdate = startdate;
 	}
 

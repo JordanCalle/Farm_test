@@ -1,5 +1,7 @@
 package com.Test_Jordan.demo.model;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,14 +18,14 @@ public class Movements {
 	private Long id;
 	private String name;
 	private Float price;
-	private Integer transactiondate;
+	private LocalDate transactiondate = LocalDate.now();
 	private Float newbalance;
 
 	public Movements() {
 
 	}
 
-	public Movements(Long id, String name, Float price, Integer transactiondate, Float newbalance) {
+	public Movements(Long id, String name, Float price, LocalDate transactiondate, Float newbalance) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -56,11 +58,11 @@ public class Movements {
 		this.price = price;
 	}
 
-	public Integer getTransactiondate() {
+	public LocalDate getTransactiondate() {
 		return transactiondate;
 	}
 
-	public void setTransactiondate(Integer transactiondate) {
+	public void setTransactiondate(LocalDate transactiondate) {
 		this.transactiondate = transactiondate;
 	}
 
