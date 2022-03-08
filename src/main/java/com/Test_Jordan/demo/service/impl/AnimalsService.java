@@ -23,12 +23,8 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 
 	@Override
 	public Integer save(Animals a) {
-		Integer res=0;
 		Animals animals=data.save(a);
-		if(!animals.equals(null)) {
-			res=1;
-		}
-		return res;
+		return 0;
 	}
 
 	@Override
