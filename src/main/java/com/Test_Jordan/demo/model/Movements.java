@@ -6,10 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name="Movements")
+//@Table(name="Movements")
 public class Movements {
 
 	@Id
@@ -17,21 +18,31 @@ public class Movements {
 	// Variables Encapsuladas
 	private Long id;
 	private String name;
+	private Integer animalid;
 	private Float price;
 	private LocalDate transactiondate = LocalDate.now();
+	private String transactiontype = "Sale";
 	private Float newbalance;
+	
+	@ManyToOne
+	@JoinColumn
+	private Animals animals;
 
 	public Movements() {
 
 	}
 
-	public Movements(Long id, String name, Float price, LocalDate transactiondate, Float newbalance) {
+	public Movements(Long id, String name, Integer animalid, Float price, LocalDate transactiondate,
+			String transactiontype, Float newbalance, Animals animals) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.animalid = animalid;
 		this.price = price;
 		this.transactiondate = transactiondate;
+		this.transactiontype = transactiontype;
 		this.newbalance = newbalance;
+		this.animals = animals;
 	}
 
 	public Long getId() {
@@ -50,6 +61,14 @@ public class Movements {
 		this.name = name;
 	}
 
+	public Integer getAnimalid() {
+		return animalid;
+	}
+
+	public void setAnimalid(Integer animalid) {
+		this.animalid = animalid;
+	}
+
 	public Float getPrice() {
 		return price;
 	}
@@ -66,6 +85,14 @@ public class Movements {
 		this.transactiondate = transactiondate;
 	}
 
+	public String getTransactiontype() {
+		return transactiontype;
+	}
+
+	public void setTransactiontype(String transactiontype) {
+		this.transactiontype = transactiontype;
+	}
+
 	public Float getNewbalance() {
 		return newbalance;
 	}
@@ -73,6 +100,20 @@ public class Movements {
 	public void setNewbalance(Float newbalance) {
 		this.newbalance = newbalance;
 	}
+
+	public Animals getAnimals() {
+		return animals;
+	}
+
+	public void setAnimals(Animals animals) {
+		this.animals = animals;
+	}
+
+	
+
+	
+	
+	
 	
 	
 	

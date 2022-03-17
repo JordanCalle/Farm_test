@@ -46,8 +46,10 @@
 				<tr bgcolor="grey">
 					<th>ID</th>
 					<th>Name</th>
+					<th>Animal ID</th>
 					<th>Price</th>
 					<th>Transaction Date</th>
+					<th>Transaction Type</th>
 					<th>Farm's New Balance</th>
 				</tr>
 			</thead>
@@ -55,8 +57,10 @@
 				<tr th:each="movements:${movements}">
 					<td th:text=${movements.id}></td>
 					<td th:text=${movements.name}></td>
+					<td th:text=${movements.animalid}></td>
 					<td th:text="${'$'+movements.price}"></td>
 					<td th:text=${movements.transactiondate}></td>
+					<td th:text=${movements.transactiontype}></td>
 					<td th:text=${movements.newbalance}></td>
 				</tr>
 			</tbody>

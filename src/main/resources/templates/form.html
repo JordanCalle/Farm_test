@@ -9,7 +9,7 @@
 <body>
 	<div class="contanier mt-4">
 		<div class="col-sm-6">
-			<form th:action="@{/save}" th:object=${animals} method="POST">
+			<form th:action="@{/savepurchase}" th:object=${animals} method="POST">
 
 				<div class="card">
 					<div class="card-header"></div>
@@ -29,6 +29,12 @@
 							<label>Start Date</label>
 							<input th:field="*{startdate}" type="text" class="form-control"/>
 						</div>
+						
+						<div class="form-group" hidden>
+							<label>Transaction Date</label>
+							<input th:field="*{transactiondate}" type="text" class="form-control"/>
+						</div>
+						
 						<div class="form-group">
 							<label>Status</label>
 							<input th:field="*{status}" type="text" class="form-control" placeholder="Example: In farm"/>

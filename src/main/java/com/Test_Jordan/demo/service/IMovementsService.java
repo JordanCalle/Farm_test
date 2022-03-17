@@ -6,5 +6,5 @@ import com.Test_Jordan.demo.model.Movements;
 
 public interface IMovementsService {
 	public List<Movements>listmovements(); //Lo utilizo para poder almacenar y mostrar la secuencia de objetos ingresados de forma ordenada
-	public Integer savetransaction (Movements a);
+	public Integer savetransaction (Movements b);
 }

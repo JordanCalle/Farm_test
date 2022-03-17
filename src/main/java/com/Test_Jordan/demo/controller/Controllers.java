@@ -16,6 +16,7 @@ import com.Test_Jordan.demo.model.Animals;
 import com.Test_Jordan.demo.model.Cattle;
 import com.Test_Jordan.demo.model.Chickens;
 import com.Test_Jordan.demo.model.Movements;
+import com.Test_Jordan.demo.repositories.IMovements;
 import com.Test_Jordan.demo.service.IAnimalService;
 import com.Test_Jordan.demo.service.ICattleService;
 import com.Test_Jordan.demo.service.IChickenService;
@@ -41,11 +42,20 @@ public class Controllers {
 		return "form";
 	}
 
+	@PostMapping("/savepurchase")
+	public String savepurchase(@Valid Animals a, Model model) {
+		service.savepurchase(a);
+		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getTransactiontype(), null, a);
+		servicemovements.savetransaction(movements);
+		return "redirect:/listeggs";
+	}
+	
 	@PostMapping("/save")
 	public String save(@Valid Animals a, Model model) {
 		service.save(a);
 		return "redirect:/listeggs";
 	}
+	
 
 	@GetMapping("/editar/{id}")
 	public String editar(@PathVariable Integer id, Model model) {
@@ -110,8 +120,8 @@ public class Controllers {
 	}
 
 	@PostMapping("/savetransaction")
-	public String save(Movements a, Model model) {
-		servicemovements.savetransaction(a);
+	public String save(Movements b, Model model) {
+		servicemovements.savetransaction(b);
 		return "redirect:/listmovements";
 	}
 
