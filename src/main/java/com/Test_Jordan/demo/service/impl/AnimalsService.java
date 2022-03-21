@@ -32,6 +32,19 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 		Animals animals=data.save(a);
 		return 0;
 	}
+	
+	@Override
+	public Integer savesales(Animals a) {
+		Animals animals=data.save(a);
+		return 0;
+	}
+	
+	/*@Override
+	public Integer changestatus(Animals a) {
+		a.setStatus("Sold");
+		Animals animals=data.save(a);
+		return 0;
+	}*/
 
 	@Override
 	public Optional<Animals> listarId(Integer id) {	

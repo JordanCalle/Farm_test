@@ -45,7 +45,7 @@ public class Controllers {
 	@PostMapping("/savepurchase")
 	public String savepurchase(@Valid Animals a, Model model) {
 		service.savepurchase(a);
-		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getTransactiontype(), null, a);
+		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(), null,a, null);
 		servicemovements.savetransaction(movements);
 		return "redirect:/listeggs";
 	}
@@ -63,6 +63,22 @@ public class Controllers {
 		model.addAttribute("animals", animals);
 		return "editeggsform";
 	}
+	
+	//Sales
+	@GetMapping("/vender/{id}")
+	public String vender(@Valid Animals a,@PathVariable Integer id, Model model) {
+		Optional<Animals> animals = service.listarId(id);
+		model.addAttribute("animals", animals);
+		return "selleggsform";
+	}
+	
+	@PostMapping("/savesales")
+	public String savesales(@Valid Animals a, Model model) {
+		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getSalestype(), null, a, null);
+		servicemovements.savetransaction(movements);
+		return "redirect:/listeggs";
+	}
+	//End Sales
 
 	@Autowired
 	private IChickenService servicechickens;
@@ -85,6 +101,14 @@ public class Controllers {
 		servicechickens.savechickens(a);
 		return "redirect:/listchickens";
 	}
+	
+	@PostMapping("/savechickpurch")
+	public String savechickpurch(@Valid Chickens a, Model model) {
+		servicechickens.savechickpurch(a);
+		Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(), null,null,a);
+		servicemovements.savetransaction(movements);
+		return "redirect:/listchickens";
+	}
 
 	@GetMapping("/editarchicken/{id}")
 	public String editarchicken(@PathVariable Integer id, Model model) {
@@ -92,6 +116,22 @@ public class Controllers {
 		model.addAttribute("chickens", chickens);
 		return "editchickenform";
 	}
+	
+	//Sales Chicken
+		@GetMapping("/venderchick/{id}")
+		public String venderchick(@Valid Chickens a,@PathVariable Integer id, Model model) {
+			Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
+			model.addAttribute("chickens", chickens);
+			return "sellchickens";
+		}
+		
+		@PostMapping("/savechicksales")
+		public String savechicksales(@Valid Chickens a, Model model) {
+			Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(), a.getSalestype(), null, null, a);
+			servicemovements.savetransaction(movements);
+			return "redirect:/listchickens";
+		}
+		//End Sales Chicken
 
 	@Autowired
 	private ICattleService servicecattle;
@@ -113,16 +153,16 @@ public class Controllers {
 		return "Movements"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
 
-	@GetMapping("/newtransaction")
+	/*@GetMapping("/newtransaction")
 	public String agregartransaction(Model model) {
 		model.addAttribute("movements", new Movements());
 		return "movementsform";
 	}
 
 	@PostMapping("/savetransaction")
-	public String save(Movements b, Model model) {
+	public String save(Movements b, Animals a, Model model) {
 		servicemovements.savetransaction(b);
 		return "redirect:/listmovements";
-	}
+	}*/
 
 }

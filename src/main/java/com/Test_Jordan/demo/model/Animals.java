@@ -21,7 +21,8 @@ public class Animals {
 	private String status;
 	private LocalDate startdate = LocalDate.now();
 	private LocalDate transactiondate = LocalDate.now();
-	private String transactiontype = "Purchase";
+	private String purchasetype = "Purchase";
+	private String salestype = "Sale";
 	
 	@OneToMany(mappedBy = "animals", cascade = CascadeType.ALL)
 	private Set<Movements> animals;
@@ -31,14 +32,15 @@ public class Animals {
 	}
 
 	public Animals(Integer id, Float price, String status, LocalDate startdate, LocalDate transactiondate,
-			String transactiontype, Set<Movements> animals) {
+			String purchasetype, String salestype, Set<Movements> animals) {
 		super();
 		this.id = id;
 		this.price = price;
 		this.status = status;
 		this.startdate = startdate;
 		this.transactiondate = transactiondate;
-		this.transactiontype = transactiontype;
+		this.purchasetype = purchasetype;
+		this.salestype = salestype;
 		this.animals = animals;
 	}
 
@@ -82,12 +84,20 @@ public class Animals {
 		this.transactiondate = transactiondate;
 	}
 
-	public String getTransactiontype() {
-		return transactiontype;
+	public String getPurchasetype() {
+		return purchasetype;
 	}
 
-	public void setTransactiontype(String transactiontype) {
-		this.transactiontype = transactiontype;
+	public void setPurchasetype(String purchasetype) {
+		this.purchasetype = purchasetype;
+	}
+
+	public String getSalestype() {
+		return salestype;
+	}
+
+	public void setSalestype(String salestype) {
+		this.salestype = salestype;
 	}
 
 	public Set<Movements> getAnimals() {
@@ -100,7 +110,6 @@ public class Animals {
 
 	
 	
-
 	
 	
 

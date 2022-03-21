@@ -60,7 +60,7 @@
 					<td th:text=${animal.status}></td>
 					<td th:text=${animal.startdate}></td>
 					<td><a th:href="@{/editar/}+${animal.id}" class="btn btn-warning">Edit</a>
-					<a th:href="@{/newtransaction}" class="btn btn-warning">Sell</a>
+					<a th:href="@{/vender/}+${animal.id}" class="btn btn-warning">Sell</a>
 					</td>
 				</tr>
 			</tbody>

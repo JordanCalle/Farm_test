@@ -27,13 +27,17 @@ public class Movements {
 	@ManyToOne
 	@JoinColumn
 	private Animals animals;
+	
+	@ManyToOne
+	@JoinColumn
+	private Chickens chickens;
 
 	public Movements() {
 
 	}
 
 	public Movements(Long id, String name, Integer animalid, Float price, LocalDate transactiondate,
-			String transactiontype, Float newbalance, Animals animals) {
+			String transactiontype, Float newbalance, Animals animals, Chickens chickens) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,6 +47,7 @@ public class Movements {
 		this.transactiontype = transactiontype;
 		this.newbalance = newbalance;
 		this.animals = animals;
+		this.chickens = chickens;
 	}
 
 	public Long getId() {
@@ -109,12 +114,14 @@ public class Movements {
 		this.animals = animals;
 	}
 
-	
+	public Chickens getChickens() {
+		return chickens;
+	}
 
-	
-	
-	
-	
-	
+	public void setChickens(Chickens chickens) {
+		this.chickens = chickens;
+	}
+
+
 	
 }

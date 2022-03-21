@@ -23,17 +23,25 @@ public class ChickenService implements IChickenService{
 
 	@Override
 	public Integer savechickens(Chickens a) {
-		//Integer res=0;
 		Chickens chickens=data.save(a);
-		/*if(!chickens.equals(null)) {
-			res=1;
-		}*/
 		return 0;
 	}
 
 	@Override
 	public Optional<Chickens> listarIdchickens(Integer id) {
 		return data.findById(id);
+	}
+
+	@Override
+	public Integer savechickpurch(Chickens a) {
+		Chickens chickens=data.save(a);
+		return 0;
+	}
+
+	@Override
+	public Integer savechicksales(Chickens a) {
+		Chickens chickens=data.save(a);
+		return 0;
 	}
 
 }

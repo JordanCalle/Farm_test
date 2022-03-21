@@ -9,32 +9,31 @@
 <body>
 	<div class="contanier mt-4">
 		<div class="col-sm-6">
-			<form th:action="@{/savetransaction}" th:object=${movements} method="POST">
+			<form th:action="@{/savesales}" th:object=${animals} method="POST">
 
 				<div class="card">
 					<div class="card-header"></div>
-					<h3>Transaction Form</h3>
+					<h3>Sell Egg</h3>
 					<div class="card-body">
-						
 						<div class="form-group">
-							<label>Type</label>
-							<input th:field="*{name}" type="text" class="form-control" placeholder="Example: Chicken"/>
+							<label>ID</label>
+							<input th:field="*{id}" type="text" class="form-control" readonly/>
 						</div>
 						<div class="form-group">
-							<label>Price</label>
+							<label>Sales Price</label>
 							<input th:field="*{price}" type="text" class="form-control"/>
 						</div>
 						<div class="form-group">
 							<label>Transaction Date</label>
 							<input th:field="*{transactiondate}" type="text" class="form-control"/>
 						</div>
-						<div class="form-group">
-							<label>Transaction Type</label>
-							<input th:field="*{transactiontype}" type="text" class="form-control" readonly/>
+						<div class="form-group" hidden>
+							<label>Status</label>
+							<input th:field="*{status}" type="text" class="form-control"/>
 						</div>
 					</div>
 					<div class="card-footer">
-					<input type="submit" value="Save" class="btn btn-success">
+					<input type="submit" value="Sell" class="btn btn-success">
 					</div>
 				</div>
 

@@ -60,7 +60,7 @@
 					<td th:text=${chickens.status}></td>
 					<td th:text=${chickens.startdate}></td>
 					<td><a th:href="@{/editarchicken/}+${chickens.id}" class="btn btn-warning">Edit</a>
-					<a th:href="@{/newtransaction}" class="btn btn-warning">Sell</a>
+					<a th:href="@{/venderchick/}+${chickens.id}" class="btn btn-warning">Sell</a>
 					</td>
 				</tr>
 			</tbody>
