@@ -22,7 +22,7 @@ public class Movements {
 	private Float price;
 	private LocalDate transactiondate = LocalDate.now();
 	private String transactiontype = "Sale";
-	private Float newbalance;
+	private Float newbalance=(float) 500;
 	
 	@ManyToOne
 	@JoinColumn
@@ -121,7 +121,6 @@ public class Movements {
 	public void setChickens(Chickens chickens) {
 		this.chickens = chickens;
 	}
-
 
 	
 }

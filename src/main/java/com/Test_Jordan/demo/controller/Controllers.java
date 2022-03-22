@@ -43,9 +43,9 @@ public class Controllers {
 	}
 
 	@PostMapping("/savepurchase")
-	public String savepurchase(@Valid Animals a, Model model) {
+	public String savepurchase(Movements b,@Valid Animals a, Model model) {
 		service.savepurchase(a);
-		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(), null,a, null);
+		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(),b.getNewbalance(),a, null);
 		servicemovements.savetransaction(movements);
 		return "redirect:/listeggs";
 	}
@@ -153,16 +153,6 @@ public class Controllers {
 		return "Movements"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
 
-	/*@GetMapping("/newtransaction")
-	public String agregartransaction(Model model) {
-		model.addAttribute("movements", new Movements());
-		return "movementsform";
-	}
-
-	@PostMapping("/savetransaction")
-	public String save(Movements b, Animals a, Model model) {
-		servicemovements.savetransaction(b);
-		return "redirect:/listmovements";
-	}*/
+	
 
 }

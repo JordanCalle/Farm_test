@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Test_Jordan.demo.model.Animals;
 import com.Test_Jordan.demo.model.Movements;
 import com.Test_Jordan.demo.repositories.IMovements;
 import com.Test_Jordan.demo.service.IMovementsService;
@@ -24,10 +23,15 @@ public class MovementsService implements IMovementsService {
 	@Override
 	public Integer savetransaction(Movements a) {
 
+		float newbalance=a.getNewbalance();
+		newbalance = newbalance + a.getPrice();
+		a.setNewbalance(newbalance);
+		
 		Movements movements = data.save(a);
 		
 
 		return 0;
 	}
+	
 
 }
