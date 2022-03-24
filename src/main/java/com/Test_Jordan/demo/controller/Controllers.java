@@ -1,5 +1,9 @@
 package com.Test_Jordan.demo.controller;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -44,9 +48,29 @@ public class Controllers {
 
 	@PostMapping("/savepurchase")
 	public String savepurchase(Movements b,@Valid Animals a, Model model) {
-		service.savepurchase(a);
+		
+			try {
+			
+			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3","root","H0l4c0m0.");
+			CallableStatement stnc=con.prepareCall("{call COUNT_BY_STATUS}");
+			ResultSet rs=stnc.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+			
+			if(count<8) {
+				service.savepurchase(a);
+				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(),b.getNewbalance(),a, null);
+				servicemovements.savetransaction(movements);
+			} else {
+				System.out.println("Excedio el limite de Huevos");
+			}
+		}catch(Exception e) {
+			
+		}
+		
+		/*service.savepurchase(a);
 		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(),b.getNewbalance(),a, null);
-		servicemovements.savetransaction(movements);
+		servicemovements.savetransaction(movements);*/
 		return "redirect:/listeggs";
 	}
 	
