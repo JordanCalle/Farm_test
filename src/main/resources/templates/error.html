@@ -10,41 +10,52 @@
 	crossorigin="anonymous">
 </head>
 <body>
-
 <head>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">My Farm</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{listeggs}">Eggs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/listchickens}">Chickens</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/listcattle}">Cattle</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" th:href="@{/listmovements}">Movements</a>
-        </li>
-      </ul>
-    </div>
-  </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">My Farm</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+			data-bs-target="#navbarNav" aria-controls="navbarNav"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link active"
+					aria-current="page" th:href="@{listeggs}">Eggs</a></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/listchickens}">Chickens</a></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/listcattle}">Cattle</a></li>
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/listmovements}">Movements</a></li>
+			</ul>
+		</div>
+	</div>
 </nav>
 </head>
-
-	<h3>Oops!</h3>
-	<img src="https://media.istockphoto.com/vectors/angry-chicken-vector-id497280537?k=20&m=497280537&s=170667a&w=0&h=egyMPX_mhxImR-mPsfWuQpAW6FizEaQOuZuEqessceE=" alt="Chicken" width="443" height="387">
-	<div class="contanier mt-4">
-			<tbody>
-				You have reached the farm's limit for this item! Please use the navigation bar to go back.
-			</tbody>
-		</table>
-	</div>
+<br>
+	<center><h3 style="font-size:35px">Oops!</h3></center>
+<br>
+<br>
+<center>
+	<img
+		src="https://media.istockphoto.com/vectors/angry-chicken-vector-id497280537?k=20&m=497280537&s=170667a&w=0&h=egyMPX_mhxImR-mPsfWuQpAW6FizEaQOuZuEqessceE="
+		alt="Chicken" width="443" height="387">
+</center>
+<div class="contanier mt-4">
+	<tbody>
+		<br>
+		<center>This action could not be performed, please ensure you
+			are not exceeding the farm's limits or not meeting the necessary
+			requirements.</center>
+		<center>
+		<br>
+		Please use the navigation bar to go back.
+		<br>
+		</center>
+	</tbody>
+	</table>
+</div>
 </body>
 </html>

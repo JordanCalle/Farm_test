@@ -96,9 +96,29 @@ public class Controllers {
 
 	@PostMapping("/savesales")
 	public String savesales(@Valid Animals a, Model model) {
-		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
-				a.getSalestype(), null, a, null);
-		servicemovements.savetransaction(movements);
+		
+		try {
+			
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
+					"root", "H0l4c0m0.");
+			CallableStatement stnc = con.prepareCall("{call COUNT_CATTLE}");
+			ResultSet rs = stnc.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+			
+			if(count>4){
+				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
+						a.getSalestype(), null, a, null);
+				servicemovements.savetransaction(movements);
+			}else {
+				return "redirect:/error";
+			}
+			
+			
+		}catch(Exception e) {
+			
+		}
+		
 		return "redirect:/listeggs";
 	}
 	// End Sales
@@ -170,9 +190,27 @@ public class Controllers {
 
 	@PostMapping("/savechicksales")
 	public String savechicksales(@Valid Chickens a, Model model) {
-		Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
-				a.getSalestype(), null, null, a);
-		servicemovements.savetransaction(movements);
+		
+		try {
+			
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
+					"root", "H0l4c0m0.");
+			CallableStatement stnc = con.prepareCall("{call COUNT_CATTLE}");
+			ResultSet rs = stnc.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+			
+			if(count>4) {
+				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
+						a.getSalestype(), null, null, a);
+				servicemovements.savetransaction(movements);
+			}else {
+				return "redirect:/error";
+			}
+			
+		}catch(Exception e) {
+			
+		}
 		return "redirect:/listchickens";
 	}
 	// End Sales Chicken
