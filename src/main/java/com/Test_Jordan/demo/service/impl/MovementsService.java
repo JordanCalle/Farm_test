@@ -22,10 +22,6 @@ public class MovementsService implements IMovementsService {
 
 	@Override
 	public Integer savetransaction(Movements a) {
-
-		float newbalance=a.getNewbalance();
-		newbalance = newbalance + a.getPrice();
-		a.setNewbalance(newbalance);
 		
 		Movements movements = data.save(a);
 		

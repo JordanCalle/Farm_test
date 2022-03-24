@@ -34,25 +34,6 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 	@Override
 	public Integer savepurchase(Animals a) {
 		
-		/*try {
-			
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3","root","H0l4c0m0.");
-			CallableStatement stnc=con.prepareCall("{call COUNT_BY_STATUS}");
-			ResultSet rs=stnc.executeQuery();
-			rs.next();
-			int count = rs.getInt(1);
-			
-			if(count<5) {
-				Animals animals=data.save(a);
-				
-			} else {
-				System.out.println(count);
-				
-			}
-		}catch(Exception e) {
-			
-		}*/
-		
 		Animals animals=data.save(a);
 		
 		return 0;

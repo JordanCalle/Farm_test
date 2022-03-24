@@ -37,7 +37,7 @@ public class Controllers {
 	public String listar(Model model) {
 		List<Animals> animals = service.listar();
 		model.addAttribute("animals", animals); // Envio todo el objeto al formulario
-		return "index"; // Apunta a mi archivo HTML. Ver en "templates".
+		return "index"; // Apunta a mi archivo HTML
 	}
 
 	@GetMapping("/new")
@@ -47,39 +47,37 @@ public class Controllers {
 	}
 
 	@PostMapping("/savepurchase")
-	public String savepurchase(Movements b,@Valid Animals a, Model model) {
-		
-			try {
-			
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3","root","H0l4c0m0.");
-			CallableStatement stnc=con.prepareCall("{call COUNT_BY_STATUS}");
-			ResultSet rs=stnc.executeQuery();
+	public String savepurchase(Movements b, @Valid Animals a, Model model) {
+
+		try {
+
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
+					"root", "H0l4c0m0.");
+			CallableStatement stnc = con.prepareCall("{call COUNT_BY_STATUS}");
+			ResultSet rs = stnc.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
-			
-			if(count<8) {
+
+			if (count < 11) {
 				service.savepurchase(a);
-				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(),b.getNewbalance(),a, null);
+				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
+						a.getPurchasetype(), null, a, null);
 				servicemovements.savetransaction(movements);
 			} else {
-				System.out.println("Excedio el limite de Huevos");
+				return "redirect:/error";
 			}
-		}catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
-		
-		/*service.savepurchase(a);
-		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(),b.getNewbalance(),a, null);
-		servicemovements.savetransaction(movements);*/
+
 		return "redirect:/listeggs";
 	}
-	
+
 	@PostMapping("/save")
 	public String save(@Valid Animals a, Model model) {
 		service.save(a);
 		return "redirect:/listeggs";
 	}
-	
 
 	@GetMapping("/editar/{id}")
 	public String editar(@PathVariable Integer id, Model model) {
@@ -87,22 +85,23 @@ public class Controllers {
 		model.addAttribute("animals", animals);
 		return "editeggsform";
 	}
-	
-	//Sales
+
+	// Sales
 	@GetMapping("/vender/{id}")
-	public String vender(@Valid Animals a,@PathVariable Integer id, Model model) {
+	public String vender(@Valid Animals a, @PathVariable Integer id, Model model) {
 		Optional<Animals> animals = service.listarId(id);
 		model.addAttribute("animals", animals);
 		return "selleggsform";
 	}
-	
+
 	@PostMapping("/savesales")
 	public String savesales(@Valid Animals a, Model model) {
-		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(), a.getSalestype(), null, a, null);
+		Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
+				a.getSalestype(), null, a, null);
 		servicemovements.savetransaction(movements);
 		return "redirect:/listeggs";
 	}
-	//End Sales
+	// End Sales
 
 	@Autowired
 	private IChickenService servicechickens;
@@ -125,12 +124,32 @@ public class Controllers {
 		servicechickens.savechickens(a);
 		return "redirect:/listchickens";
 	}
-	
+
 	@PostMapping("/savechickpurch")
 	public String savechickpurch(@Valid Chickens a, Model model) {
-		servicechickens.savechickpurch(a);
-		Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(), a.getPurchasetype(), null,null,a);
-		servicemovements.savetransaction(movements);
+
+		try {
+
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
+					"root", "H0l4c0m0.");
+			CallableStatement stnc = con.prepareCall("{call COUNT_BY_STATUSCHICK}");
+			ResultSet rs = stnc.executeQuery();
+			rs.next();
+			int count = rs.getInt(1);
+
+			if (count < 5) {
+				servicechickens.savechickpurch(a);
+				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
+						a.getPurchasetype(), null, null, a);
+				servicemovements.savetransaction(movements);
+			} else {
+				return "redirect:/error";
+			}
+
+		} catch (Exception e) {
+
+		}
+
 		return "redirect:/listchickens";
 	}
 
@@ -140,22 +159,23 @@ public class Controllers {
 		model.addAttribute("chickens", chickens);
 		return "editchickenform";
 	}
-	
-	//Sales Chicken
-		@GetMapping("/venderchick/{id}")
-		public String venderchick(@Valid Chickens a,@PathVariable Integer id, Model model) {
-			Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
-			model.addAttribute("chickens", chickens);
-			return "sellchickens";
-		}
-		
-		@PostMapping("/savechicksales")
-		public String savechicksales(@Valid Chickens a, Model model) {
-			Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(), a.getSalestype(), null, null, a);
-			servicemovements.savetransaction(movements);
-			return "redirect:/listchickens";
-		}
-		//End Sales Chicken
+
+	// Sales Chicken
+	@GetMapping("/venderchick/{id}")
+	public String venderchick(@Valid Chickens a, @PathVariable Integer id, Model model) {
+		Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
+		model.addAttribute("chickens", chickens);
+		return "sellchickens";
+	}
+
+	@PostMapping("/savechicksales")
+	public String savechicksales(@Valid Chickens a, Model model) {
+		Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
+				a.getSalestype(), null, null, a);
+		servicemovements.savetransaction(movements);
+		return "redirect:/listchickens";
+	}
+	// End Sales Chicken
 
 	@Autowired
 	private ICattleService servicecattle;
@@ -176,7 +196,5 @@ public class Controllers {
 		model.addAttribute("movements", movements); // Envio todo el objeto al formulario
 		return "Movements"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
-
-	
 
 }
