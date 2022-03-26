@@ -22,7 +22,7 @@ public class Movements {
 	private Float price;
 	private LocalDate transactiondate = LocalDate.now();
 	private String transactiontype = "Sale";
-	private Float newbalance=(float) 500;
+	private Float newbalance;
 	
 	@ManyToOne
 	@JoinColumn

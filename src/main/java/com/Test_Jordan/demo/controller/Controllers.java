@@ -53,15 +53,21 @@ public class Controllers {
 
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
 					"root", "H0l4c0m0.");
+			//Llamo al stored procedure para contar la cantidad de huevos en estado In farm hay actualmente.
 			CallableStatement stnc = con.prepareCall("{call COUNT_BY_STATUS}");
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
+			//Llamo al stored procedure para que me devuelva el ultimo balance ingresado en la tabla movements.
+			CallableStatement stnc2 = con.prepareCall("{call LAST_BALANCE}");
+			ResultSet rs2 = stnc2.executeQuery();
+			rs2.next();
+			float tempbalance = rs2.getFloat(1);
 
-			if (count < 11) {
+			if (count < 17) {
 				service.savepurchase(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
-						a.getPurchasetype(), null, a, null);
+						a.getPurchasetype(),tempbalance-a.getPrice(), a, null);
 				servicemovements.savetransaction(movements);
 			} else {
 				return "redirect:/error";
@@ -105,10 +111,15 @@ public class Controllers {
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
+			//Llamo al stored procedure para que me devuelva el ultimo balance ingresado en la tabla movements.
+			CallableStatement stnc2 = con.prepareCall("{call LAST_BALANCE}");
+			ResultSet rs2 = stnc2.executeQuery();
+			rs2.next();
+			float tempbalance = rs2.getFloat(1);
 			
-			if(count>4){
+			if(count>3){
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
-						a.getSalestype(), null, a, null);
+						a.getSalestype(), tempbalance+a.getPrice(), a, null);
 				servicemovements.savetransaction(movements);
 			}else {
 				return "redirect:/error";
@@ -156,11 +167,16 @@ public class Controllers {
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
+			//Llamo al stored procedure para que me devuelva el ultimo balance ingresado en la tabla movements.
+			CallableStatement stnc2 = con.prepareCall("{call LAST_BALANCE}");
+			ResultSet rs2 = stnc2.executeQuery();
+			rs2.next();
+			float tempbalance = rs2.getFloat(1);
 
-			if (count < 5) {
+			if (count < 6) {
 				servicechickens.savechickpurch(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
-						a.getPurchasetype(), null, null, a);
+						a.getPurchasetype(), tempbalance-a.getPrice(), null, a);
 				servicemovements.savetransaction(movements);
 			} else {
 				return "redirect:/error";
@@ -199,10 +215,15 @@ public class Controllers {
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
 			int count = rs.getInt(1);
+			//Llamo al stored procedure para que me devuelva el ultimo balance ingresado en la tabla movements.
+			CallableStatement stnc2 = con.prepareCall("{call LAST_BALANCE}");
+			ResultSet rs2 = stnc2.executeQuery();
+			rs2.next();
+			float tempbalance = rs2.getFloat(1);
 			
-			if(count>4) {
+			if(count>3) {
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
-						a.getSalestype(), null, null, a);
+						a.getSalestype(), tempbalance+a.getPrice(), null, a);
 				servicemovements.savetransaction(movements);
 			}else {
 				return "redirect:/error";
