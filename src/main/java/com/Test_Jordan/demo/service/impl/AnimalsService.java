@@ -1,9 +1,5 @@
 package com.Test_Jordan.demo.service.impl;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,12 +41,6 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 		return 0;
 	}
 	
-	/*@Override
-	public Integer changestatus(Animals a) {
-		a.setStatus("Sold");
-		Animals animals=data.save(a);
-		return 0;
-	}*/
 
 	@Override
 	public Optional<Animals> listarId(Integer id) {	

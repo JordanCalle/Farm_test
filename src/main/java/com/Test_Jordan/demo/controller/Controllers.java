@@ -65,10 +65,14 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 
 			if (count < 17) {
+				if(tempbalance>a.getPrice()) {
 				service.savepurchase(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getPurchasetype(),tempbalance-a.getPrice(), a, null);
 				servicemovements.savetransaction(movements);
+				}else {
+					return "redirect:/error";
+				}
 			} else {
 				return "redirect:/error";
 			}
@@ -174,10 +178,14 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 
 			if (count < 6) {
+				if(tempbalance>a.getPrice()) {
 				servicechickens.savechickpurch(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getPurchasetype(), tempbalance-a.getPrice(), null, a);
 				servicemovements.savetransaction(movements);
+				}else {
+					return "redirect:/error";
+				}
 			} else {
 				return "redirect:/error";
 			}
