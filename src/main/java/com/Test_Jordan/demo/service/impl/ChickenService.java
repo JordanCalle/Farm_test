@@ -20,6 +20,11 @@ public class ChickenService implements IChickenService{
 	public List<Chickens> listchickens() {
 		return (List<Chickens>) data.findAll();
 	}
+	
+	@Override
+	public List<Chickens> listchickinfarm() {
+		return (List<Chickens>) data.findByStatusOrderByStatus("In farm");
+	}
 
 	@Override
 	public Integer savechickens(Chickens a) {

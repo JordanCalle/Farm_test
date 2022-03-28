@@ -17,8 +17,9 @@ public class MovementsService implements IMovementsService {
 
 	@Override
 	public List<Movements> listmovements() {
-		return (List<Movements>) data.findAll();
+		return (List<Movements>) data.findAllByOrderByIdDesc();
 	}
+	
 
 	@Override
 	public Integer savetransaction(Movements a) {

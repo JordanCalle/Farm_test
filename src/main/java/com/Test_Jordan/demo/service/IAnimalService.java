@@ -6,10 +6,10 @@ import java.util.Optional;
 import com.Test_Jordan.demo.model.Animals;
 
 public interface IAnimalService {
-	public List<Animals>listar(); //Lo utilizo para poder almacenar y mostrar la secuencia de objetos ingresados de forma ordenada
+	public List<Animals>listar();
+	public List<Animals>listegginfarm();
 	public Integer save(Animals a);
 	public Integer savepurchase(Animals a);
 	public Integer savesales(Animals a);
-	//public Integer changestatus(Animals a);
 	public Optional<Animals>listarId(Integer id);
 }

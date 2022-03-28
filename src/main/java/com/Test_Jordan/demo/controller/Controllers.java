@@ -29,7 +29,7 @@ import com.Test_Jordan.demo.service.IMovementsService;
 @Controller
 @RequestMapping
 public class Controllers {
-
+//EGGS
 	@Autowired
 	private IAnimalService service; // Para implementar el método
 
@@ -38,6 +38,13 @@ public class Controllers {
 		List<Animals> animals = service.listar();
 		model.addAttribute("animals", animals); // Envio todo el objeto al formulario
 		return "index"; // Apunta a mi archivo HTML
+	}
+	
+	@GetMapping("/listegginfarm")
+	public String listegginfarm(Model model) {
+		List<Animals> animals = service.listegginfarm();
+		model.addAttribute("animals", animals);
+		return "index";
 	}
 
 	@GetMapping("/new")
@@ -137,13 +144,20 @@ public class Controllers {
 		return "redirect:/listeggs";
 	}
 	// End Sales
-
+//CHICKENS
 	@Autowired
 	private IChickenService servicechickens;
 
 	@GetMapping("/listchickens")
 	public String listchickens(Model model) {
 		List<Chickens> chickens = servicechickens.listchickens();
+		model.addAttribute("chickens", chickens); // Envio todo el objeto al formulario
+		return "Chickens"; // Apunta a mi archivo HTML. Ver en "templates".
+	}
+	
+	@GetMapping("/listchickinfarm")
+	public String listchickinfarm(Model model) {
+		List<Chickens> chickens = servicechickens.listchickinfarm();
 		model.addAttribute("chickens", chickens); // Envio todo el objeto al formulario
 		return "Chickens"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
@@ -243,7 +257,7 @@ public class Controllers {
 		return "redirect:/listchickens";
 	}
 	// End Sales Chicken
-
+//CATTLE
 	@Autowired
 	private ICattleService servicecattle;
 
@@ -253,14 +267,14 @@ public class Controllers {
 		model.addAttribute("cattle", cattle); // Envio todo el objeto al formulario
 		return "Cattle"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
-
+//MOVEMENTS
 	@Autowired
 	private IMovementsService servicemovements;
 
 	@GetMapping("/listmovements")
 	public String listmovements(Model model) {
 		List<Movements> movements = servicemovements.listmovements();
-		model.addAttribute("movements", movements); // Envio todo el objeto al formulario
+		model.addAttribute("movements", movements); // Envio todo el objeto al formulario*/
 		return "Movements"; // Apunta a mi archivo HTML. Ver en "templates".
 	}
 

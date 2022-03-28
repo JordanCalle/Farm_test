@@ -22,6 +22,12 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 	}
 	
 	@Override
+	public List<Animals> listegginfarm() {
+		return (List<Animals>) data.findByStatusOrderByStatus("In farm");
+	}
+	
+	
+	@Override
 	public Integer save(Animals a) {
 		Animals animals=data.save(a);
 		return 0;
