@@ -32,6 +32,8 @@ select newbalance from movements order by id DESC LIMIT 1;
 
 #Actualiza el status de huevos a "Hatched" si corresponde y crea 1 pollo por cada huevo actualizado.
 
+El valor actual define que luego de 15 días transcurridos desde su fecha de inicio, se actualizará el status del huevo.
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SKIP_DAYS`()
 BEGIN
 INSERT INTO chickens (price, status, startdate)
