@@ -20,7 +20,6 @@ import com.Test_Jordan.demo.model.Animals;
 import com.Test_Jordan.demo.model.Cattle;
 import com.Test_Jordan.demo.model.Chickens;
 import com.Test_Jordan.demo.model.Movements;
-import com.Test_Jordan.demo.repositories.IMovements;
 import com.Test_Jordan.demo.service.IAnimalService;
 import com.Test_Jordan.demo.service.ICattleService;
 import com.Test_Jordan.demo.service.IChickenService;
@@ -33,27 +32,46 @@ public class Controllers {
 	@Autowired
 	private IAnimalService service; // Para implementar el método
 
-	@GetMapping("/listeggs")
+	@GetMapping("/listeggs")//Lista completa de todos los huevos en la tabla
 	public String listar(Model model) {
 		List<Animals> animals = service.listar();
 		model.addAttribute("animals", animals); // Envio todo el objeto al formulario
 		return "index"; // Apunta a mi archivo HTML
 	}
 	
-	@GetMapping("/listegginfarm")
+	@GetMapping("/listegginfarm")//Lista donde se filtra por status
 	public String listegginfarm(Model model) {
 		List<Animals> animals = service.listegginfarm();
 		model.addAttribute("animals", animals);
 		return "index";
 	}
+	
+	@GetMapping("/skipdays")//Proceso del paso de los días, se hace a través de un botón para actualizar la tabla
+	public String skipdays(Model model) {
+		
+		try {
+			//Conecto con la DB para hacer llamado al Stored procedure
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
+					"root", "H0l4c0m0.");
+			CallableStatement stnc = con.prepareCall("{call SKIP_DAYS}");
+			ResultSet rs = stnc.executeQuery();
+			List<Animals> animals = service.listar();
+			model.addAttribute("animals", animals);
+			return "index";
+		}catch(Exception e) {
+			
+		}
+		
+		return "index";
+	}
 
-	@GetMapping("/new")
+	@GetMapping("/new")//Compra de huevos
 	public String agregar(Model model) {
 		model.addAttribute("animals", new Animals());
 		return "form";
 	}
 
-	@PostMapping("/savepurchase")
+	@PostMapping("/savepurchase")//Guarda la compra de huevos
 	public String savepurchase(Movements b, @Valid Animals a, Model model) {
 
 		try {
@@ -71,7 +89,8 @@ public class Controllers {
 			rs2.next();
 			float tempbalance = rs2.getFloat(1);
 
-			if (count < 17) {
+			//Condicional que establece el LIMITE de huevos con status "In farm".
+			if (count < 15) {
 				if(tempbalance>a.getPrice()) {
 				service.savepurchase(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
@@ -103,7 +122,7 @@ public class Controllers {
 		return "editeggsform";
 	}
 
-	// Sales
+	// Venta de huevos
 	@GetMapping("/vender/{id}")
 	public String vender(@Valid Animals a, @PathVariable Integer id, Model model) {
 		Optional<Animals> animals = service.listarId(id);
@@ -128,7 +147,9 @@ public class Controllers {
 			rs2.next();
 			float tempbalance = rs2.getFloat(1);
 			
+			//Condicional que establece el minimo de ganado que debe poseer la granja para poder vender.
 			if(count>3){
+				service.savesales(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getSalestype(), tempbalance+a.getPrice(), a, null);
 				servicemovements.savetransaction(movements);
@@ -143,7 +164,8 @@ public class Controllers {
 		
 		return "redirect:/listeggs";
 	}
-	// End Sales
+	// Fin de venta de huevos
+
 //CHICKENS
 	@Autowired
 	private IChickenService servicechickens;
@@ -151,15 +173,15 @@ public class Controllers {
 	@GetMapping("/listchickens")
 	public String listchickens(Model model) {
 		List<Chickens> chickens = servicechickens.listchickens();
-		model.addAttribute("chickens", chickens); // Envio todo el objeto al formulario
-		return "Chickens"; // Apunta a mi archivo HTML. Ver en "templates".
+		model.addAttribute("chickens", chickens);
+		return "Chickens";
 	}
 	
 	@GetMapping("/listchickinfarm")
 	public String listchickinfarm(Model model) {
 		List<Chickens> chickens = servicechickens.listchickinfarm();
-		model.addAttribute("chickens", chickens); // Envio todo el objeto al formulario
-		return "Chickens"; // Apunta a mi archivo HTML. Ver en "templates".
+		model.addAttribute("chickens", chickens);
+		return "Chickens";
 	}
 
 	@GetMapping("/newchicken")
@@ -179,6 +201,7 @@ public class Controllers {
 
 		try {
 
+			//Stored procedure para contar la cantidad de pollos con status "In farm" hay.
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
 					"root", "H0l4c0m0.");
 			CallableStatement stnc = con.prepareCall("{call COUNT_BY_STATUSCHICK}");
@@ -191,6 +214,7 @@ public class Controllers {
 			rs2.next();
 			float tempbalance = rs2.getFloat(1);
 
+			//Condicional que establece el LIMITE de pollos con status "In farm" puede almacenar la granja.
 			if (count < 6) {
 				if(tempbalance>a.getPrice()) {
 				servicechickens.savechickpurch(a);
@@ -218,7 +242,7 @@ public class Controllers {
 		return "editchickenform";
 	}
 
-	// Sales Chicken
+	// Venta de pollos
 	@GetMapping("/venderchick/{id}")
 	public String venderchick(@Valid Chickens a, @PathVariable Integer id, Model model) {
 		Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
@@ -231,6 +255,7 @@ public class Controllers {
 		
 		try {
 			
+			//Stored procedure que cuenta la cantidad de ganado hay en la granja.
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
 					"root", "H0l4c0m0.");
 			CallableStatement stnc = con.prepareCall("{call COUNT_CATTLE}");
@@ -243,7 +268,9 @@ public class Controllers {
 			rs2.next();
 			float tempbalance = rs2.getFloat(1);
 			
+			//Condicional que establece el minimo de ganado que debe poseer la granja para poder vender.
 			if(count>3) {
+				servicechickens.savechicksales(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getSalestype(), tempbalance+a.getPrice(), null, a);
 				servicemovements.savetransaction(movements);
@@ -256,7 +283,7 @@ public class Controllers {
 		}
 		return "redirect:/listchickens";
 	}
-	// End Sales Chicken
+	// Fin de venta de pollos
 //CATTLE
 	@Autowired
 	private ICattleService servicecattle;
@@ -264,8 +291,8 @@ public class Controllers {
 	@GetMapping("/listcattle")
 	public String listcattle(Model model) {
 		List<Cattle> cattle = servicecattle.listcattle();
-		model.addAttribute("cattle", cattle); // Envio todo el objeto al formulario
-		return "Cattle"; // Apunta a mi archivo HTML. Ver en "templates".
+		model.addAttribute("cattle", cattle);
+		return "Cattle";
 	}
 //MOVEMENTS
 	@Autowired
@@ -274,8 +301,8 @@ public class Controllers {
 	@GetMapping("/listmovements")
 	public String listmovements(Model model) {
 		List<Movements> movements = servicemovements.listmovements();
-		model.addAttribute("movements", movements); // Envio todo el objeto al formulario*/
-		return "Movements"; // Apunta a mi archivo HTML. Ver en "templates".
+		model.addAttribute("movements", movements);
+		return "Movements";
 	}
 
 }

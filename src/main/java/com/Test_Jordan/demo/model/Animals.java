@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "Animals") //Will store eggs.
+@Table(name = "Animals") //Defino mi tabla de huevos y su nombre.
 public class Animals {
 
 	@Id
@@ -108,9 +108,7 @@ public class Animals {
 		this.animals = animals;
 	}
 
-	
-	
-	
+
 	
 
 }

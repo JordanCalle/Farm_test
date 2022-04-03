@@ -18,12 +18,12 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 
 	@Override
 	public List<Animals> listar() {
-		return (List<Animals>) data.findAll(); // Nos retorna una lista
+		return (List<Animals>) data.findAll(); //Lista completa de la tabla
 	}
 	
 	@Override
 	public List<Animals> listegginfarm() {
-		return (List<Animals>) data.findByStatusOrderByStatus("In farm");
+		return (List<Animals>) data.findByStatusOrderByStatus("In farm"); //Lista filtrada por status
 	}
 	
 	
@@ -36,6 +36,7 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 	@Override
 	public Integer savepurchase(Animals a) {
 		
+		a.setStatus("In farm");
 		Animals animals=data.save(a);
 		
 		return 0;
@@ -43,6 +44,7 @@ public class AnimalsService implements IAnimalService { // Implementa y trae los
 	
 	@Override
 	public Integer savesales(Animals a) {
+		a.setStatus("Sold");
 		Animals animals=data.save(a);
 		return 0;
 	}

@@ -39,12 +39,14 @@ public class ChickenService implements IChickenService{
 
 	@Override
 	public Integer savechickpurch(Chickens a) {
+		a.setStatus("In farm");
 		Chickens chickens=data.save(a);
 		return 0;
 	}
 
 	@Override
 	public Integer savechicksales(Chickens a) {
+		a.setStatus("Sold");
 		Chickens chickens=data.save(a);
 		return 0;
 	}
