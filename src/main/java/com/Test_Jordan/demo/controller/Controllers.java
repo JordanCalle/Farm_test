@@ -24,13 +24,16 @@ import com.Test_Jordan.demo.service.IAnimalService;
 import com.Test_Jordan.demo.service.ICattleService;
 import com.Test_Jordan.demo.service.IChickenService;
 import com.Test_Jordan.demo.service.IMovementsService;
+import com.Test_Jordan.demo.service.impl.ConnectionService;
+import com.Test_Jordan.demo.service.IConnectionService;
 
 @Controller
 @RequestMapping
 public class Controllers {
 //EGGS
 	@Autowired
-	private IAnimalService service; // Para implementar el método
+	private IAnimalService service;// Para implementar el método
+	private IConnectionService serviceconnection;
 
 	@GetMapping("/listeggs")//Lista completa de todos los huevos en la tabla
 	public String listar(Model model) {
@@ -40,39 +43,40 @@ public class Controllers {
 	}
 	
 	@GetMapping("/listegginfarm")//Lista donde se filtra por status
-	public String listegginfarm(Model model) {
+	public String listEggInFarm(Model model) {
 		List<Animals> animals = service.listegginfarm();
 		model.addAttribute("animals", animals);
 		return "index";
 	}
 	
 	@GetMapping("/skipdays")//Proceso del paso de los días, se hace a través de un botón para actualizar la tabla
-	public String skipdays(Model model) {
+	public String skipDays(Model model) {
 		
 		try {
 			//Conecto con la DB para hacer llamado al Stored procedure
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
-					"root", "H0l4c0m0.");
+			/*Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
+					"root", "H0l4c0m0.");*/
+			serviceconnection.establishConnection(null);
 			CallableStatement stnc = con.prepareCall("{call SKIP_DAYS}");
 			ResultSet rs = stnc.executeQuery();
 			List<Animals> animals = service.listar();
 			model.addAttribute("animals", animals);
 			return "index";
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		return "index";
 	}
 
 	@GetMapping("/new")//Compra de huevos
-	public String agregar(Model model) {
+	public String newEgg(Model model) {
 		model.addAttribute("animals", new Animals());
 		return "form";
 	}
 
 	@PostMapping("/savepurchase")//Guarda la compra de huevos
-	public String savepurchase(Movements b, @Valid Animals a, Model model) {
+	public String savePurchase(Movements b, @Valid Animals a, Model model) {
 
 		try {
 
@@ -103,14 +107,14 @@ public class Controllers {
 				return "redirect:/error";
 			}
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 		return "redirect:/listeggs";
 	}
 
 	@PostMapping("/save")
-	public String save(@Valid Animals a, Model model) {
+	public String saveEgg(@Valid Animals a, Model model) {
 		service.save(a);
 		return "redirect:/listeggs";
 	}
@@ -131,7 +135,7 @@ public class Controllers {
 	}
 
 	@PostMapping("/savesales")
-	public String savesales(@Valid Animals a, Model model) {
+	public String saveSales(@Valid Animals a, Model model) {
 		
 		try {
 			
@@ -159,7 +163,7 @@ public class Controllers {
 			
 			
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		
 		return "redirect:/listeggs";
@@ -171,33 +175,33 @@ public class Controllers {
 	private IChickenService servicechickens;
 
 	@GetMapping("/listchickens")
-	public String listchickens(Model model) {
+	public String listChickens(Model model) {
 		List<Chickens> chickens = servicechickens.listchickens();
 		model.addAttribute("chickens", chickens);
 		return "Chickens";
 	}
 	
 	@GetMapping("/listchickinfarm")
-	public String listchickinfarm(Model model) {
+	public String listChickInFarm(Model model) {
 		List<Chickens> chickens = servicechickens.listchickinfarm();
 		model.addAttribute("chickens", chickens);
 		return "Chickens";
 	}
 
 	@GetMapping("/newchicken")
-	public String agregarchicken(Model model) {
+	public String newChicken(Model model) {
 		model.addAttribute("chickens", new Chickens());
 		return "formchicken";
 	}
 
 	@PostMapping("/savechicken")
-	public String save(@Valid Chickens a, Model model) {
+	public String saveChicken(@Valid Chickens a, Model model) {
 		servicechickens.savechickens(a);
 		return "redirect:/listchickens";
 	}
 
 	@PostMapping("/savechickpurch")
-	public String savechickpurch(@Valid Chickens a, Model model) {
+	public String saveChickPurch(@Valid Chickens a, Model model) {
 
 		try {
 
@@ -229,14 +233,14 @@ public class Controllers {
 			}
 
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 
 		return "redirect:/listchickens";
 	}
 
 	@GetMapping("/editarchicken/{id}")
-	public String editarchicken(@PathVariable Integer id, Model model) {
+	public String editChicken(@PathVariable Integer id, Model model) {
 		Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
 		model.addAttribute("chickens", chickens);
 		return "editchickenform";
@@ -244,14 +248,14 @@ public class Controllers {
 
 	// Venta de pollos
 	@GetMapping("/venderchick/{id}")
-	public String venderchick(@Valid Chickens a, @PathVariable Integer id, Model model) {
+	public String sellChick(@Valid Chickens a, @PathVariable Integer id, Model model) {
 		Optional<Chickens> chickens = servicechickens.listarIdchickens(id);
 		model.addAttribute("chickens", chickens);
 		return "sellchickens";
 	}
 
 	@PostMapping("/savechicksales")
-	public String savechicksales(@Valid Chickens a, Model model) {
+	public String saveChickSales(@Valid Chickens a, Model model) {
 		
 		try {
 			
@@ -279,7 +283,7 @@ public class Controllers {
 			}
 			
 		}catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 		return "redirect:/listchickens";
 	}
@@ -289,7 +293,7 @@ public class Controllers {
 	private ICattleService servicecattle;
 
 	@GetMapping("/listcattle")
-	public String listcattle(Model model) {
+	public String listCattle(Model model) {
 		List<Cattle> cattle = servicecattle.listcattle();
 		model.addAttribute("cattle", cattle);
 		return "Cattle";
@@ -299,7 +303,7 @@ public class Controllers {
 	private IMovementsService servicemovements;
 
 	@GetMapping("/listmovements")
-	public String listmovements(Model model) {
+	public String listMovements(Model model) {
 		List<Movements> movements = servicemovements.listmovements();
 		model.addAttribute("movements", movements);
 		return "Movements";
