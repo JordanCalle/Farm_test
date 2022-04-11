@@ -1,5 +1,7 @@
 package com.Test_Jordan.demo.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,4 +14,5 @@ public interface IAnimalService {
 	public Integer savepurchase(Animals a);
 	public Integer savesales(Animals a);
 	public Optional<Animals>listarId(Integer id);
+	public Connection establishConnection() throws SQLException;
 }

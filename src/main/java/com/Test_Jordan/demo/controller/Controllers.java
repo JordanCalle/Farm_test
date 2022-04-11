@@ -2,7 +2,6 @@ package com.Test_Jordan.demo.controller;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +23,6 @@ import com.Test_Jordan.demo.service.IAnimalService;
 import com.Test_Jordan.demo.service.ICattleService;
 import com.Test_Jordan.demo.service.IChickenService;
 import com.Test_Jordan.demo.service.IMovementsService;
-import com.Test_Jordan.demo.service.impl.ConnectionService;
-import com.Test_Jordan.demo.service.IConnectionService;
 
 @Controller
 @RequestMapping
@@ -33,7 +30,6 @@ public class Controllers {
 //EGGS
 	@Autowired
 	private IAnimalService service;// Para implementar el método
-	private IConnectionService serviceconnection;
 
 	@GetMapping("/listeggs")//Lista completa de todos los huevos en la tabla
 	public String listar(Model model) {
@@ -54,13 +50,14 @@ public class Controllers {
 		
 		try {
 			//Conecto con la DB para hacer llamado al Stored procedure
-			/*Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
-					"root", "H0l4c0m0.");*/
-			serviceconnection.establishConnection(null);
+			Connection con = service.establishConnection();
 			CallableStatement stnc = con.prepareCall("{call SKIP_DAYS}");
 			ResultSet rs = stnc.executeQuery();
 			List<Animals> animals = service.listar();
 			model.addAttribute("animals", animals);
+			con.close();
+			stnc.close();
+			rs.close();
 			return "index";
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -80,8 +77,7 @@ public class Controllers {
 
 		try {
 
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
-					"root", "H0l4c0m0.");
+			Connection con = service.establishConnection();
 			//Llamo al stored procedure para contar la cantidad de huevos en estado In farm hay actualmente.
 			CallableStatement stnc = con.prepareCall("{call COUNT_BY_STATUS}");
 			ResultSet rs = stnc.executeQuery();
@@ -95,7 +91,7 @@ public class Controllers {
 
 			//Condicional que establece el LIMITE de huevos con status "In farm".
 			if (count < 15) {
-				if(tempbalance>a.getPrice()) {
+				if((tempbalance>a.getPrice())&&(a.getPrice()>0)) {
 				service.savepurchase(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getPurchasetype(),tempbalance-a.getPrice(), a, null);
@@ -106,6 +102,13 @@ public class Controllers {
 			} else {
 				return "redirect:/error";
 			}
+			
+			con.close();
+			stnc.close();
+			rs.close();
+			stnc2.close();
+			rs2.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -139,8 +142,7 @@ public class Controllers {
 		
 		try {
 			
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
-					"root", "H0l4c0m0.");
+			Connection con = service.establishConnection();
 			CallableStatement stnc = con.prepareCall("{call COUNT_CATTLE}");
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
@@ -152,7 +154,7 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 			
 			//Condicional que establece el minimo de ganado que debe poseer la granja para poder vender.
-			if(count>3){
+			if((count>3)&&(a.getPrice()>0)){
 				service.savesales(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getSalestype(), tempbalance+a.getPrice(), a, null);
@@ -161,6 +163,11 @@ public class Controllers {
 				return "redirect:/error";
 			}
 			
+			con.close();
+			stnc.close();
+			rs.close();
+			stnc2.close();
+			rs2.close();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -206,8 +213,7 @@ public class Controllers {
 		try {
 
 			//Stored procedure para contar la cantidad de pollos con status "In farm" hay.
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
-					"root", "H0l4c0m0.");
+			Connection con = service.establishConnection();
 			CallableStatement stnc = con.prepareCall("{call COUNT_BY_STATUSCHICK}");
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
@@ -220,7 +226,7 @@ public class Controllers {
 
 			//Condicional que establece el LIMITE de pollos con status "In farm" puede almacenar la granja.
 			if (count < 6) {
-				if(tempbalance>a.getPrice()) {
+				if((tempbalance>a.getPrice())&&(a.getPrice()>0)) {
 				servicechickens.savechickpurch(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getPurchasetype(), tempbalance-a.getPrice(), null, a);
@@ -231,7 +237,13 @@ public class Controllers {
 			} else {
 				return "redirect:/error";
 			}
-
+			
+			con.close();
+			stnc.close();
+			rs.close();
+			stnc2.close();
+			rs2.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -260,8 +272,7 @@ public class Controllers {
 		try {
 			
 			//Stored procedure que cuenta la cantidad de ganado hay en la granja.
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/farm?serverTimezone=GMT-3",
-					"root", "H0l4c0m0.");
+			Connection con = service.establishConnection();
 			CallableStatement stnc = con.prepareCall("{call COUNT_CATTLE}");
 			ResultSet rs = stnc.executeQuery();
 			rs.next();
@@ -273,7 +284,7 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 			
 			//Condicional que establece el minimo de ganado que debe poseer la granja para poder vender.
-			if(count>3) {
+			if((count>3)&&(a.getPrice()>0)) {
 				servicechickens.savechicksales(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getSalestype(), tempbalance+a.getPrice(), null, a);
@@ -281,6 +292,12 @@ public class Controllers {
 			}else {
 				return "redirect:/error";
 			}
+			
+			con.close();
+			stnc.close();
+			rs.close();
+			stnc2.close();
+			rs2.close();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
