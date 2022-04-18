@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,14 @@ import com.Test_Jordan.demo.service.IMovementsService;
 @RequestMapping
 public class Controllers {
 //EGGS
+	
+	@Value("${animalLimit}")
+	private Integer animalLimit;
+	@Value("${chickenLimit}")
+	private Integer chickenLimit;
+	@Value("${cattleLimit}")
+	private Integer cattleLimit;
+	
 	@Autowired
 	private IAnimalService service;// Para implementar el método
 
@@ -55,15 +64,15 @@ public class Controllers {
 			ResultSet rs = stnc.executeQuery();
 			List<Animals> animals = service.listar();
 			model.addAttribute("animals", animals);
-			con.close();
-			stnc.close();
 			rs.close();
+			stnc.close();
+			con.close();
 			return "index";
 		}catch(Exception e) {
 			e.printStackTrace();
+			return "redirect:/error";
 		}
 		
-		return "index";
 	}
 
 	@GetMapping("/new")//Compra de huevos
@@ -90,27 +99,37 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 
 			//Condicional que establece el LIMITE de huevos con status "In farm".
-			if (count < 15) {
+			if (count < animalLimit) {
 				if((tempbalance>a.getPrice())&&(a.getPrice()>0)) {
 				service.savepurchase(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getPurchasetype(),tempbalance-a.getPrice(), a, null);
 				servicemovements.savetransaction(movements);
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 				}else {
+					stnc.close();
+					rs.close();
+					stnc2.close();
+					rs2.close();
+					con.close();
 					return "redirect:/error";
 				}
 			} else {
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 				return "redirect:/error";
 			}
 			
-			con.close();
-			stnc.close();
-			rs.close();
-			stnc2.close();
-			rs2.close();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "redirect:/error";
 		}
 
 		return "redirect:/listeggs";
@@ -154,23 +173,27 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 			
 			//Condicional que establece el minimo de ganado que debe poseer la granja para poder vender.
-			if((count>3)&&(a.getPrice()>0)){
+			if((count>cattleLimit)&&(a.getPrice()>0)){
 				service.savesales(a);
 				Movements movements = new Movements(null, "Egg", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getSalestype(), tempbalance+a.getPrice(), a, null);
 				servicemovements.savetransaction(movements);
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 			}else {
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 				return "redirect:/error";
-			}
-			
-			con.close();
-			stnc.close();
-			rs.close();
-			stnc2.close();
-			rs2.close();
-			
+			}	
 		}catch(Exception e) {
 			e.printStackTrace();
+			return "redirect:/error";
 		}
 		
 		return "redirect:/listeggs";
@@ -225,27 +248,36 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 
 			//Condicional que establece el LIMITE de pollos con status "In farm" puede almacenar la granja.
-			if (count < 6) {
+			if (count < chickenLimit) {
 				if((tempbalance>a.getPrice())&&(a.getPrice()>0)) {
 				servicechickens.savechickpurch(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getPurchasetype(), tempbalance-a.getPrice(), null, a);
 				servicemovements.savetransaction(movements);
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 				}else {
+					stnc.close();
+					rs.close();
+					stnc2.close();
+					rs2.close();
+					con.close();
 					return "redirect:/error";
 				}
 			} else {
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 				return "redirect:/error";
-			}
-			
-			con.close();
-			stnc.close();
-			rs.close();
-			stnc2.close();
-			rs2.close();
-			
+			}	
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "redirect:/error";
 		}
 
 		return "redirect:/listchickens";
@@ -284,23 +316,27 @@ public class Controllers {
 			float tempbalance = rs2.getFloat(1);
 			
 			//Condicional que establece el minimo de ganado que debe poseer la granja para poder vender.
-			if((count>3)&&(a.getPrice()>0)) {
+			if((count>cattleLimit)&&(a.getPrice()>0)) {
 				servicechickens.savechicksales(a);
 				Movements movements = new Movements(null, "Chicken", a.getId(), a.getPrice(), a.getTransactiondate(),
 						a.getSalestype(), tempbalance+a.getPrice(), null, a);
 				servicemovements.savetransaction(movements);
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 			}else {
+				stnc.close();
+				rs.close();
+				stnc2.close();
+				rs2.close();
+				con.close();
 				return "redirect:/error";
-			}
-			
-			con.close();
-			stnc.close();
-			rs.close();
-			stnc2.close();
-			rs2.close();
-			
+			}	
 		}catch(Exception e) {
 			e.printStackTrace();
+			return "redirect:/error";
 		}
 		return "redirect:/listchickens";
 	}
